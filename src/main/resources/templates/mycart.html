@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>购物车</title>
+    <link rel="stylesheet" th:href="@{/css/weui.css}">
+    <link rel="stylesheet" th:href="@{/css/weuix.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-2.1.0.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.weui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/cart.css}"/>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page tabbar js_show">
+        <!--<header>-->
+            <!--购物车<span class="fr">编辑</span>-->
+        <!--</header>-->
+
+        <div class="weui-header bg-green">
+            <h1 class="weui-header-title">购物车</h1>
+            <div class="weui-header-right" >
+                <span class="fr" id="bianji">编辑</span>
+            </div>
+        </div>
+
+        <div class="page__bd" style="height: 100%;">
+
+            <div class="weui-tab">
+                <div class="no" th:if="${cartlist.code=='0'}">
+                    <p>暂无数据，快去逛逛吧！</p>
+                </div>
+                <div class="con" th:if="${cartlist.code=='1'}">
+                    <div class="content">
+                        <!--循环显示购物车信息-->
+                        <ul ind="0">
+                            <li class="clearfix"  th:each="mycartlist,iterStat:${cartlist.mycartlist}">
+                                    <div class="label fl">
+                                        <label>
+                                            <input type="checkbox" checked="checked"/>
+                                                <img th:src="@{/img/c_checkbox_on.png}"/>
+                                        </label>
+                                    </div>
+                                    <div class="img fl">
+                                        <a th:href="'http://localhost:8080/produce/producdetailsandcomments/'+${mycartlist.produce_id}">
+                                            <img th:src="${mycartlist.produceEntity.produce_imgurl}"/>
+                                        </a>
+                                    </div>
+                                    <div class="text fl">
+                                        <a th:href="'http://localhost:8080/produce/producdetailsandcomments/'+${mycartlist.produce_id}">
+                                            <p class="overflow" th:text="${mycartlist.produceEntity.produce_name}"></p>
+                                        </a>
+                                        <p class="clearfix">
+                                            <span class="fl red" th:text="'￥'+${mycartlist.produceEntity.produce_price}"></span>
+                                            <span class="fr">
+                                                <input type="button" value="-" class="btn1"/>
+                                                <span class="number" th:text="${mycartlist.cart_produce_count}">1</span>
+                                                <input type="button" value="+" class="btn2"/>
+                                            </span>
+                                        </p>
+                                    </div>
+                            </li>
+                        </ul>
+                        <p class="total">一共
+                            <number></number>
+                            件商品：<span></span></p>
+                    </div>
+
+                </div>
+                <div class="bottom fixed">
+                    <div class="fl bottom-label">
+                        <label>
+                            <input type="checkbox" checked="checked" />
+                            <img src="/img/c_checkbox_on.png" class="fl" />
+                            全选
+                        </label>
+                    </div>
+                    <div class="fr">
+                        需要支付：<span></span>
+                        <button class="sett">结算</button>
+                    </div>
+                </div>
+                <div class="bottom fixed" style="display: none;">
+                    <div class="fr">
+                        <button class="delete">删除</button>
+                    </div>
+                </div>
+                <div class="text1 fixed">
+                    <form>
+                        <input type="number" oninput="checkNum(this.value)" id="input" />
+                        <input type="button" value="确定" />
+                    </form>
+                    <script>
+                        function checkNum(val) {
+                            document.getElementById('input').value = val >= 0 ? val : 0
+                        }
+                    </script>
+                </div>
+                <div class="alert fixed"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:include="include/menu :: menu">
+    </div>
+    <div th:include="include/message :: message">
+    </div>
+
+</div>
+<script type="text/javascript" th:src="@{/js/web.js}"></script>
+<script type="text/javascript" th:src="@{/js/zepto.js}"></script>
+<script type="text/javascript" th:src="@{/js/cart.js}"></script>
+<script type="text/javascript">
+    //设置当前菜单高亮
+    $('.weui-tabbar a').removeClass('weui-bar__item_on');
+    $('#menu_cart').addClass('weui-bar__item_on');
+</script>
+</body>
+
+</html>

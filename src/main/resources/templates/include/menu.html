@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+</head>
+<footer th:fragment="menu">
+
+    <style type="text/css">
+        .cornerMark {
+            display: inline-block;
+            padding: 0.1rem 0.25rem 0.14rem 0.30rem;
+            font-size: 0.6rem;
+            line-height: 1;
+            color: #ffffff;
+            background-color: rgba(239, 28, 16, 0.7);
+            border-radius: 5rem;
+            position: absolute;
+            margin-left: 1rem;
+        }
+        /* #EF1C10 */
+    </style>
+    <div class="weui-tabbar">
+        <a href="http://localhost:8080/" class="weui-tabbar__item" id='menu_index'>
+            <i class="icon icon-27 weui-tabbar__icon" aria-hidden="true"></i>
+            <p class="weui-tabbar__label">首页</p>
+        </a>
+        <a href="http://localhost:8080/shoppingcart/mycart.do" class="weui-tabbar__item" id='menu_cart'>
+            <!--<span id="cartCount" class="cornerMark"></span>-->
+            <i class="icon icon-24 weui-tabbar__icon" aria-hidden="true"></i>
+            <p class="weui-tabbar__label">购物车</p>
+        </a>
+        <a href="http://localhost:8080/user/center.do" class="weui-tabbar__item" id='menu_user_center'>
+            <i class="icon icon-99 weui-tabbar__icon" aria-hidden="true"></i>
+            <p class="weui-tabbar__label">会员中心</p>
+        </a>
+    </div>
+    <!--<script type="text/javascript">-->
+        <!--function loadCartCount() {-->
+            <!--var cartCount = 0;-->
+            <!--$.ajax({-->
+                <!--type : "POST",-->
+                <!--url : '${root}'+'/mobile/cart/count'+'?${_csrf.parameterName}=${_csrf.token}',-->
+                <!--dataType : "json", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）-->
+                <!--async : false,-->
+                <!--success : function(json) {-->
+                    <!--if (json.data == 0 || json.data == null) {-->
+                        <!--$('#cartCount').hide();-->
+                    <!--} else {-->
+                        <!--$('#cartCount').html('').html(json.data);-->
+                        <!--cartCount = json.data;-->
+                    <!--}-->
+                <!--}-->
+            <!--});-->
+            <!--return cartCount;-->
+        <!--}-->
+        <!--$(loadCartCount);-->
+    <!--</script>-->
+</footer>
+</html>

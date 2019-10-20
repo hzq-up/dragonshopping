@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hzq.dragonshopping.mapper.ShoppingCartMapper">
+
+    <resultMap id="produceShoppingCartMap" type="com.hzq.dragonshopping.entity.ProduceShoppingCartEntity">
+        <id property="id" jdbcType="INTEGER" column="id"/>
+        <result property="user_id" jdbcType="INTEGER" column="user_id"/>
+        <result property="produce_id" jdbcType="INTEGER" column="produce_id"/>
+        <result property="cart_produce_count" jdbcType="INTEGER" column="cart_produce_count"/>
+        <result property="create_time" jdbcType="TIMESTAMP" column="create_time"/>
+        <result property="update_time" jdbcType="TIMESTAMP" column="update_time"/>
+
+        <association property="produceEntity" javaType="com.hzq.dragonshopping.entity.ProduceEntity">
+            <id property="produce_id" jdbcType="INTEGER" column="produce_id"/>
+            <result property="produce_name" jdbcType="VARCHAR" column="produce_name"/>
+            <result property="produce_explain" jdbcType="VARCHAR" column="produce_explain"/>
+            <result property="produce_produce_sortnum" jdbcType="VARCHAR" column="produce_produce_sortnum"/>
+            <!--<result property="produce_count" jdbcType="INTEGER" column="produce_count"/>-->
+            <result property="produce_price" jdbcType="DECIMAL" column="produce_price"/>
+            <result property="produce_shop_price" jdbcType="DECIMAL" column="produce_shop_price"/>
+            <result property="produce_imgurl" jdbcType="VARCHAR" column="produce_imgurl"/>
+            <result property="produce_author" jdbcType="VARCHAR" column="produce_author"/>
+            <result property="produce_sale_count" jdbcType="INTEGER" column="produce_sale_count"/>
+            <result property="produce_hot" jdbcType="INTEGER" column="produce_hot"/>
+            <result property="produce_creat_user_id" jdbcType="INTEGER" column="produce_creat_user_id"/>
+            <result property="create_time" jdbcType="TIMESTAMP" column="create_time"/>
+            <result property="update_time" jdbcType="TIMESTAMP" column="update_time"/>
+        </association>
+    </resultMap>
+
+
+    <!--查询购物车里所有商品信息-->
+    <select id="selectAllShoppingCartByUid" parameterType="int"  resultMap="produceShoppingCartMap">
+        SELECT * FROM `shopping_cart` as a,produce_sell as b where a.produce_id=b.produce_id and a.user_id=#{value}
+    </select>
+
+    <!--增加购物车商品-->
+    <insert id="insertShoppingCart" parameterType="ShoppingCartEntity">
+        INSERT INTO shopping_cart
+        VALUES
+        (
+          null,
+          #{user_id},
+          #{produce_id},
+          #{cart_produce_count},
+          DEFAULT,
+          DEFAULT
+        )
+    </insert>
+
+    <!--根据用户id和商品id修改该商品数量-->
+    <update id="updateShoppingCartProduceCount" parameterType="ShoppingCartEntity">
+        UPDATE
+          shopping_cart
+        SET
+          cart_produce_count = #{cart_produce_count}
+        WHERE
+          produce_id=#{produce_id} and user_id=#{user_id}
+    </update>
+
+    <!--查询用户购物车是否存在该商品-->
+    <select id="selectShoppingCartProduceCountByUidAndPid" parameterType="ShoppingCartEntity" resultType="ShoppingCartEntity">
+        select
+            user_id,produce_id,
+            cart_produce_count
+         from
+            shopping_cart
+         where
+            user_id=#{user_id} and produce_id=#{produce_id}
+    </select>
+
+</mapper>

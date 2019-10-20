@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta content="text/html;" charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<title>商品</title>
+	<link rel="stylesheet" th:href="@{/css/weui.css}">
+	<link rel="stylesheet" th:href="@{/css/weuix.css}">
+	<script type="text/javascript" th:src="@{/js/jquery-2.1.0.js}"></script>
+	<script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/zepto.weui.js}"></script>
+	<script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/cart.css}"/>
+	<style>
+		.returnkImg{
+			height: 25px;
+			width: 25px;
+			float: left;
+			margin-left: 10px;
+			margin-top: 12.5px;
+		}
+		.title{
+			text-align: center;
+			margin-right: 25px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class='container'>
+		<div class="page tabbar js_show">
+			<div class="page__bd" style="height: 100%;">
+				<div class="weui-tab">
+					<div class="weui-tab__panel" style='padding-bottom: 100px'>
+						<div class="weui-header bg-green">
+							<div class="weui-header-left"> <a class="icon icon-109 f-white" href="http://localhost:8080/index.do">返回</a>  </div>
+							<h1 class="weui-header-title" th:text="${produce[0].name}">></h1>
+							<!--<div class="weui-header-right"><a class="icon icon-83 f-white">更多</a></div>-->
+						</div>
+						<!-- 搜索 -->
+						<!--<div class="weui-search-bar" id="searchBar">-->
+							<!--<form id="searchForm" action="" onsubmit="return searchKeyword();" method="get"  class="weui-search-bar__form">-->
+								<!--<div class="weui-search-bar__box">-->
+									<!--<i class="weui-icon-search"></i>-->
+									<!--<input type="text" class="weui-search-bar__input" id="searchInput" placeholder="搜索">-->
+									<!--<input type="hidden" id="encodeKeyword" name="keyword">-->
+									<!--<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>-->
+								<!--</div>-->
+								<!--<label class="weui-search-bar__label" id="searchText"-->
+									<!--style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">-->
+									<!--<i class="weui-icon-search"></i> <span>搜索</span>-->
+								<!--</label>-->
+							<!--</form>-->
+							<!--<a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>-->
+						<!--</div>-->
+						<div class='weui-panel weui-panel_access'>
+							<div class="weui-panel__bd" id="wishlistDiv">
+								<div th:each="produce,iterStat:${produce}">
+									<div th:each="produce,iterStat:${produce.produceEntities}">
+										<a th:href="'http://localhost:8080/produce/producdetailsandcomments/'+${produce.produce_id}" class="weui-media-box weui-media-box_appmsg">
+											<div class="weui-media-box__hd">
+												<img class="weui-media-box__thumb" th:src="${produce.produce_imgurl}" />
+											</div>
+											<div class="weui-media-box__bd">
+												<h4 class="weui-media-box__title" th:text="${produce.produce_name}"> </h4>
+												<p class="weui-media-box__desc">
+													店面价格 <strong class='link' th:text="${produce.produce_price}"></strong>
+													市场价格 <del th:text="${produce.produce_shop_price}"></del>
+												</p>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+							<!--<div class="weui-panel__ft" id="loadMoreDiv" onclick="loadMore()">-->
+								<!--<a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">-->
+									<!--<div class="weui-cell__bd">查看更多</div><span class="weui-cell__ft"></span>-->
+									<!--<input type="hidden" value="${productListPage.currentPage}" id="currentPage" />-->
+									<!--<input type="hidden" value="${productListPage.totalPage}" id="totalPage" />-->
+								<!--</a>-->
+							<!--</div>-->
+						</div>
+					</div>
+					<div th:include="include/menu :: menu">
+					</div>
+					<div th:include="include/message :: message">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<input type="hidden" id="parameterName" value="${_csrf.parameterName}">-->
+	<!--<input type="hidden" id="token" value="${_csrf.token}">-->
+	<!--<script>-->
+	<!--function searchKeyword() {-->
+		<!--if ($.trim($('#searchInput').val()).length == 0) {-->
+			<!--showMsg("请输入查询关键字!");-->
+			<!--return false;-->
+		<!--}-->
+		<!--var keyword = $.trim($('#searchInput').val());-->
+		<!--keyword = encodeURI(keyword);-->
+		<!--$('#encodeKeyword').val(keyword);-->
+		<!--return true;-->
+	<!--}-->
+		<!--function loadMore() {-->
+			<!--var currentPage = Number($('#currentPage').val());-->
+			<!--$.ajax({-->
+				<!--type : "POST",-->
+				<!--url : '${root}' + '/mobile/category/page?${_csrf.parameterName}=${_csrf.token}',-->
+				<!--data: {"currentPage": (currentPage + 1), "categoryId": ${categoryObject.id}},-->
+				<!--dataType : "json", //ajax返回值设置为text(json格式也可用它返回，可打印出结果，也可设置成json)  -->
+				<!--success : function(data) {-->
+					<!--if (data.currentPage == data.totalPage) -->
+						<!--$('#loadMoreDiv').remove();-->
+					<!--addMoreRow(data.productList);-->
+					<!--$('#currentPage').val(data.currentPage);-->
+				<!--}-->
+			<!--});-->
+		<!--}-->
+		<!--function addMoreRow(data) {-->
+			<!--for ( var i in data) {-->
+				<!--$('#wishlistDiv').append(-->
+					<!--'<a href="${root}/mobile/product/' + data[i].id + '" class="weui-media-box weui-media-box_appmsg">'+-->
+					<!--'    <div class="weui-media-box__hd">'+-->
+					<!--'        <img class="weui-media-box__thumb" src="/Shopping' + data[i].defaultImg + '" />'+-->
+					<!--'    </div>'+-->
+					<!--'    <div class="weui-media-box__bd">'+-->
+					<!--'        <h4 class="weui-media-box__title">' + data[i].name + '</h4>'+-->
+					<!--'        <p class="weui-media-box__desc">'+-->
+					<!--'            店面价格<strong class="link">￥' + (data[i].price / 100) + '</strong>'+-->
+					<!--'            市场价格<del>￥' + (data[i].shopPrice / 100) + '</del>'+-->
+					<!--'        </p>'+-->
+					<!--'    </div>'+-->
+					<!--'</a>'-->
+				<!--);-->
+			<!--}-->
+		<!--}-->
+		<!--$(function() {-->
+			<!--var $searchBar = $('#searchBar'), $searchResult = $('#searchResult'), $searchText = $('#searchText'), $searchInput = $('#searchInput'), $searchClear = $('#searchClear'), $searchCancel = $('#searchCancel');-->
+
+			<!--function hideSearchResult() {-->
+				<!--$searchResult.hide();-->
+				<!--$searchInput.val('');-->
+			<!--}-->
+			<!--function cancelSearch() {-->
+				<!--hideSearchResult();-->
+				<!--$searchBar.removeClass('weui-search-bar_focusing');-->
+				<!--$searchText.show();-->
+			<!--}-->
+
+			<!--$searchText.on('click', function() {-->
+				<!--$searchBar.addClass('weui-search-bar_focusing');-->
+				<!--$searchInput.focus();-->
+			<!--});-->
+			<!--$searchInput.on('blur', function() {-->
+				<!--if (!this.value.length)-->
+					<!--cancelSearch();-->
+			<!--}).on('input', function() {-->
+				<!--if (this.value.length) {-->
+					<!--$searchResult.show();-->
+				<!--} else {-->
+					<!--$searchResult.hide();-->
+				<!--}-->
+			<!--});-->
+			<!--$searchClear.on('click', function() {-->
+				<!--hideSearchResult();-->
+				<!--$searchInput.focus();-->
+			<!--});-->
+			<!--$searchCancel.on('click', function() {-->
+				<!--cancelSearch();-->
+				<!--$searchInput.blur();-->
+			<!--});-->
+
+			<!--//设置当前菜单高亮-->
+			<!--$('.weui-tabbar a').removeClass('weui-bar__item_on');-->
+			<!--$('#menu_index').addClass('weui-bar__item_on');-->
+		<!--});-->
+	<!--</script>-->
+</body>
+
+</html>

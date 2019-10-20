@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link rel="stylesheet" th:href="@{../css/weui.css}">
+    <link rel="stylesheet" th:href="@{../css/weuix.css}">
+    <link rel="stylesheet" th:href="@{../css/weui.min.css}">
+    <script type="text/javascript" th:src="@{../js/jquery-2.1.0.js}"></script>
+    <script type="text/javascript" th:src="@{../js/zepto.min.js}"></script>
+    <script type="text/javascript" th:src="@{../js/zepto.weui.js}"></script>
+    <script type="text/javascript" th:src="@{../js/common.js}"></script>
+    <link rel="stylesheet" th:href="@{../css/style.css}"/>
+    <link rel="stylesheet" th:href="@{../css/font-awesome.min.css}"/>
+    <style type="text/css">
+        .top{
+            margin-top: 45%
+        }
+        .shop_price {
+            /*margin-left: 15px;*/
+            margin-top: 5px;
+            color: #ff5000;
+            text-align: center;
+            font-size: 13px;
+            /*display: block;*/
+        }
+        .m_price {
+            color: #666666;
+            /*margin-left: 17px;*/
+            font-size: 11px;
+            text-align: center;
+            font-weight: bold;
+            /*display: block;*/
+        }
+        .margin_top{
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page js_show">
+        <!--<div class="page__hd">-->
+            <!--<h1 class="page__title">会员中心</h1>-->
+        <!--</div>-->
+        <div class="weui-header bg-green">
+            <!--<div class="weui-header-left"> <a class="icon icon-109 f-white"></a>  </div>-->
+            <h1 class="weui-header-title">个人中心</h1>
+            <!--<div class="weui-header-right"><a class="icon icon-22 f-white"></a></div>-->
+        </div>
+
+        <div class="weui-grids">
+            <!--<div class="weui-grid">-->
+                <a href="<c:url value='/mobile/account/order/list'/>" class="weui-grid">
+                    <div class="weui-grid__icon">
+                        <img th:src="@{../img/Shopping-bag-3@3x.png}" alt="">
+
+                    </div>
+                    <p class="weui-grid__label">订单历史</p>
+                </a>
+            <!--</div>-->
+
+            <a href="<c:url value='/mobile/account/contact/list'/>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img th:src="@{../img/User-V@3x.png}" alt="">
+                </div>
+                <p class="weui-grid__label">常用收货地址</p>
+            </a>
+            <a href="<c:url value='/mobile/account/wishlist/page/1'/>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img th:src="@{../img/Tag-2@3x.png}" alt="">
+                </div>
+                <p class="weui-grid__label">我的收藏</p>
+            </a>
+            <a href="<c:url value='/mobile/account/user_setting'/>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <img th:src="@{../img/Settings-3@3x.png}" alt="">
+                </div>
+                <p class="weui-grid__label">会员设置</p>
+            </a>
+            <a href="javascript:;" class="weui-grid" id="loginoutmesg">
+                <div class="weui-grid__icon">
+                    <img th:src="@{../img/Lock-square@3x.png}" alt="">
+                </div>
+                <p class="weui-grid__label">退出</p>
+                <input id="loginout_inp" type="hidden" th:value="${msgcode}">
+                </input>
+            </a>
+            <a href="javascript:;" class="weui-grid">
+                <div class="weui-grid__icon">
+
+                </div>
+                <p class="weui-grid__label">&nbsp;</p>
+            </a>
+            <a href="javascript:;" class="weui-grid">
+                <div class="weui-grid__icon">
+
+                </div>
+                <p class="weui-grid__label">&nbsp;</p>
+            </a>
+            <a href="javascript:;" class="weui-grid">
+                <div class="weui-grid__icon">
+                </div>
+                <p class="weui-grid__label">&nbsp;</p>
+            </a>
+            <a href="javascript:;" class="weui-grid">
+                <div class="weui-grid__icon">
+                </div>
+                <p class="weui-grid__label">&nbsp;</p>
+            </a>
+        </div>
+        <div th:include="include/menu :: menu">
+        </div>
+        <div th:include="include/message :: message">
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            //设置当前菜单高亮
+            $('.weui-tabbar a').removeClass('weui-bar__item_on');
+            $('#menu_user_center').addClass('weui-bar__item_on');
+        });
+        $("#loginoutmesg").click(function(){
+
+            var statu = confirm("确定退出?");
+            if(!statu){
+                return false;
+            }
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                url: '/user/loginout.do',
+                data: {},
+                datatype: 'json',
+                success: function (data) {
+                    if(data.msgcode=="1"){
+                        $.toast("退出登录!",1000);
+                    }else if (data.msgcode=="0"){
+                        $.toast("已退出!"+"<p>请勿重复操作!</p>",1000);
+                    }
+
+                }
+            })
+
+
+        })
+
+    </script>
+</body>
+</html>

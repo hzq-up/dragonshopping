@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>首页</title>
+    <link rel="stylesheet" th:href="@{/css/weui.css}">
+    <link rel="stylesheet" th:href="@{/css/weuix.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-2.1.0.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.weui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <style type="text/css">
+        .top{
+            margin-top: 45%
+        }
+        .shop_price {
+            /*margin-left: 15px;*/
+            margin-top: 5px;
+            color: #ff5000;
+            text-align: center;
+            font-size: 13px;
+            /*display: block;*/
+        }
+        .m_price {
+            color: #666666;
+            /*margin-left: 17px;*/
+            font-size: 11px;
+            text-align: center;
+            font-weight: bold;
+            /*display: block;*/
+        }
+        .margin_top{
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+
+        <div class="page tabbar js_show">
+            <div class="weui-btn_primary weui-header ">
+                <div class="weui-header-left"> <a class="icon icon-30 f-black" th:href="login"></a>  </div>
+                <h1 class="weui-header-title">神龙购书网</h1>
+            </div>
+
+            <div class="page__bd" style="height: 100%;">
+                <div class="weui-tab">
+                    <div class="weui-tab__panel" style='padding-bottom: 100px'>
+                        <!-- 搜索 -->
+                        <!--<div class="weui-search-bar" id="searchBar">-->
+                            <!--<form id="searchForm" action="" onsubmit="return searchKeyword();" method="get"  class="weui-search-bar__form">-->
+                                <!--<div class="weui-search-bar__box">-->
+                                    <!--<i class="weui-icon-search"></i>-->
+                                    <!--<input type="text" class="weui-search-bar__input" id="searchInput" placeholder="搜索">-->
+                                    <!--<input type="hidden" id="encodeKeyword" name="keyword">-->
+                                    <!--<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>-->
+                                <!--</div>-->
+                                <!--<label class="weui-search-bar__label" id="searchText"-->
+                                       <!--style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">-->
+                                    <!--<i class="weui-icon-search"></i> <span>搜索</span>-->
+                                <!--</label>-->
+                            <!--</form>-->
+                            <!--<a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>-->
+                        <!--</div>-->
+                        <div class='weui-panel weui-panel_access'>
+                            <div class="weui-panel__hd">
+                                热门读书
+                            </div>
+                            <!--九宫格热门商品-->
+                            <div class="weui-grids">
+                                <div class="weui-grid" th:each="produce,iterStat:${produceList}">
+                                    <a th:href="'http://localhost:8080/produce/producdetailsandcomments/'+${produce.produce_id}">
+                                        <div class="weui-grid__icon">
+                                            <img th:src="${produce.produce_imgurl}" alt="">
+                                        </div>
+                                        <p class="weui-grid__label">
+                                            <span class="weui-grid__label f13 margin_top" th:text="${produce.produce_name}"></span>
+                                        <p class="shop_price">￥<span th:text="${produce.produce_price}"></span></p>
+                                        <p class="m_price">￥<s th:text="${produce.produce_shop_price}"></s></p>
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                            <!--<div class="weui-panel__ft">-->
+                                <!--<a href="" class="weui-cell weui-cell_access weui-cell_link">-->
+                                    <!--<div class="weui-cell__bd">查看更多</div><span class="weui-cell__ft"></span>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        </div>
+                            <!-- 分类开始 -->
+                            <div th:each="produceCategorys,iterStat:${produceCategory}" class='weui-panel weui-panel_access'>
+                                <div th:if="${#lists.size(produceCategorys.produceEntities)>0}">
+                                    <div class="weui-panel__hd" th:text="${produceCategorys.name}"></div>
+                                </div>
+                                <div th:each="produce,iterStat:${produceCategorys.produceEntities}">
+                                    <div class="weui-panel__bd">
+                                        <a th:href="'http://localhost:8080/produce/producdetailsandcomments/'+${produce.produce_id}" class="weui-media-box weui-media-box_appmsg">
+                                            <div class="weui-media-box__hd">
+                                                <img class="weui-media-box__thumb" th:src="${produce.produce_imgurl}" />
+                                            </div>
+                                            <div class="weui-media-box__bd">
+                                                <h4 class="weui-media-box__title" th:text="${produce.produce_name}"></h4>
+                                                <p class="weui-media-box__desc">
+                                                    店面价格 <strong class='link' th:text="'￥'+${produce.produce_price}"></strong>
+                                                    市场价格 <del th:text="'￥'+${produce.produce_shop_price}"></del>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div th:if="${#lists.size(produceCategorys.produceEntities)>=3}">
+                                    <div class="weui-panel__ft">
+                                        <a th:href="'http://localhost:8080/producecategory/selectCategoryAll/'+${produceCategorys.id}" class="weui-cell weui-cell_access weui-cell_link">
+                                            <div class="weui-cell__bd">查看更多</div><span class="weui-cell__ft"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /分类结束 -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:include="include/menu :: menu">
+        </div>
+        <div th:include="include/message :: message">
+        </div>
+    </div>
+    <script type="text/javascript">
+        function searchKeyword() {
+            if ($.trim($('#searchInput').val()).length == 0) {
+                $.alert("请输入查询关键字!");
+                return false;
+            }
+            var keyword = $.trim($('#searchInput').val());
+            keyword = encodeURI(keyword);
+            $('#encodeKeyword').val(keyword);
+            return true;
+        }
+        $(function() {
+            var $searchBar = $('#searchBar'), $searchResult = $('#searchResult'), $searchText = $('#searchText'), $searchInput = $('#searchInput'), $searchClear = $('#searchClear'), $searchCancel = $('#searchCancel');
+
+            function hideSearchResult() {
+                $searchResult.hide();
+                $searchInput.val('');
+            }
+            function cancelSearch() {
+                hideSearchResult();
+                $searchBar.removeClass('weui-search-bar_focusing');
+                $searchText.show();
+            }
+
+            $searchText.on('click', function() {
+                $searchBar.addClass('weui-search-bar_focusing');
+                $searchInput.focus();
+            });
+            $searchInput.on('blur', function() {
+                if (!this.value.length)
+                    cancelSearch();
+            }).on('input', function() {
+                if (this.value.length) {
+                    $searchResult.show();
+                } else {
+                    $searchResult.hide();
+                }
+            });
+            $searchClear.on('click', function() {
+                hideSearchResult();
+                $searchInput.focus();
+            });
+            $searchCancel.on('click', function() {
+                cancelSearch();
+                $searchInput.blur();
+            });
+
+            //设置当前菜单高亮
+            $('.weui-tabbar a').removeClass('weui-bar__item_on');
+            $('#menu_index').addClass('weui-bar__item_on');
+        });
+    </script>
+</body>
+</html>

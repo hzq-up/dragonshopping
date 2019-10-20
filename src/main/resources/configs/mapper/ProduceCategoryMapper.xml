@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hzq.dragonshopping.mapper.ProduceCategoryMapper">
+    <resultMap id="produceCategoryMap" type="com.hzq.dragonshopping.entity.ProduceCategoryExampleEntity">
+        <id property="id" jdbcType="INTEGER" column="id"/>
+        <result property="name" jdbcType="VARCHAR" column="name"/>
+        <result property="describe" jdbcType="VARCHAR" column="describe"/>
+        <result property="sortnum" jdbcType="VARCHAR" column="sortnum"/>
+
+        <collection property="produceEntities" ofType="com.hzq.dragonshopping.entity.ProduceEntity">
+            <id property="produce_id" jdbcType="INTEGER" column="produce_id"/>
+            <result property="produce_name" jdbcType="VARCHAR" column="produce_name"/>
+            <result property="produce_explain" jdbcType="VARCHAR" column="produce_explain"/>
+            <result property="produce_produce_sortnum" jdbcType="VARCHAR" column="produce_produce_sortnum"/>
+            <result property="produce_count" jdbcType="INTEGER" column="produce_count"/>
+            <result property="produce_price" jdbcType="DECIMAL" column="produce_price"/>
+            <result property="produce_shop_price" jdbcType="DECIMAL" column="produce_shop_price"/>
+            <result property="produce_imgurl" jdbcType="VARCHAR" column="produce_imgurl"/>
+            <result property="produce_author" jdbcType="VARCHAR" column="produce_author"/>
+            <result property="produce_sale_count" jdbcType="INTEGER" column="produce_sale_count"/>
+            <result property="produce_hot" jdbcType="INTEGER" column="produce_hot"/>
+            <result property="produce_creat_user_id" jdbcType="INTEGER" column="produce_creat_user_id"/>
+            <result property="create_time" jdbcType="TIMESTAMP" column="create_time"/>
+            <result property="update_time" jdbcType="TIMESTAMP" column="update_time"/>
+        </collection>
+    </resultMap>
+    <!--查询所有商品详情-->
+    <select id="selectProduceCategoryExample" resultMap="produceCategoryMap">
+        SELECT *
+        FROM produce_sell_category as T1 left join produce_sell as T2 on T1.sortnum = T2.produce_produce_sortnum
+        ORDER BY T1.id asc
+    </select>
+    <!--根据商品id查询商品详情-->
+    <select id="selectProduceCategoryExampleById" parameterType="int" resultMap="produceCategoryMap">
+      SELECT *
+      FROM produce_sell_category as T1 left join produce_sell as T2 on T1.sortnum = T2.produce_produce_sortnum
+      where produce_id=#{value}
+    </select>
+    <!--根据商品类别id查询该类别下的所有商品-->
+    <select id="selectAllProduceByCategoryId" parameterType="int" resultMap="produceCategoryMap">
+        SELECT *
+        FROM produce_sell_category as T1 left join produce_sell as T2 on T1.sortnum = T2.produce_produce_sortnum
+        where id=#{value}
+    </select>
+    
+</mapper>

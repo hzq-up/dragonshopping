@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta content="text/html;" charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>商品详情</title>
+	<link rel="stylesheet" th:href="@{/css/weui.css}">
+	<link rel="stylesheet" th:href="@{/css/weuix.css}">
+	<script type="text/javascript" th:src="@{/js/jquery-2.1.0.js}"></script>
+	<script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/zepto.weui.js}"></script>
+	<script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+	<style>
+		.right {
+			float: right;
+		}
+
+		.headimg {
+			float: left;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			margin-right: 10px;
+		}
+
+		#center {
+			text-align: center;
+			line-height: 20px;
+			height: 20px;
+		}
+
+		#left {
+			float: left;
+			margin-right: 10px;
+			text-align: center;
+		}
+
+		.product_title {
+			font-size: 14px;
+			padding: 10px;
+		}
+
+		.product_price {
+			padding: 10px;
+		}
+
+		.shop_price {
+			color: #ff5000;
+			font-size: 20px;
+			font-weight: bold;
+			display: block;
+		}
+
+		.m_price {
+			color: #666;
+			font-size: 10px;
+			display: block;
+		}
+
+		.price {
+			background-color: #eee;
+			text-align: center;
+			height: 57px;
+		}
+
+		.addCart {
+			background-color: #ff5000;
+			height: 57px;
+			color: #fff;
+			text-align: center;
+			display: box;
+			display: -webkit-box;
+			display: -moz-box;
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			-webkit-box-align: center;
+			-moz-box-align: center;
+			font-size: 17px;
+		}
+
+		.buyNow {
+			background-color: #09BB07;
+			height: 57px;
+			color: #fff;
+			text-align: center;
+			display: box;
+			display: -webkit-box;
+			display: -moz-box;
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			-webkit-box-align: center;
+			-moz-box-align: center;
+			font-size: 17px;
+		}
+
+		#product_tab_content img {
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class='container'>
+		<div class="page tabbar js_show">
+			<div class="weui-btn_primary weui-header ">
+				<h1 class="weui-header-title">神龙购书网</h1>
+			</div>
+
+			<div class="page__bd" style="height: 100%;">
+				<div class="weui-tab">
+					<div class="weui-tab__panel">
+						<!-- 商品开始 -->
+						<div>
+							<img width='100%' height="360px"
+								th:src="${produceDetails.produceEntities[0].produce_imgurl}">
+							<!--<span th:text=""></span>-->
+						</div>
+						<!-- 设置产品编号和产品名称 -->
+						<div class='product_title' productId="10" id='product_title'>
+							<span th:text="${produceDetails.produceEntities[0].produce_name}"></span>
+							<input name="productId" type="hidden"
+								th:value="${produceDetails.produceEntities[0].produce_id}">
+						</div>
+						<div class="weui-flex" style='padding: 0 10px; margin-bottom: 20px'>
+							<div class="weui-flex__item">
+								<div class="placeholder price">
+									<div class='shop_price'
+										th:text="'￥'+${produceDetails.produceEntities[0].produce_price}+'元'"></div>
+									<div>
+										<del class='m_price'
+											th:text="'￥'+${produceDetails.produceEntities[0].produce_shop_price}+'元'"></del>
+									</div>
+									<input id="submitPrice" type="hidden"
+										th:value="${produceDetails.produceEntities[0].produce_price}">
+									<input id="submitOptionValueKeyGroup" type="hidden">
+								</div>
+							</div>
+							<div class="weui-flex__item">
+								<div class="placeholder addCart">加入购物车</div>
+							</div>
+							<div class="weui-flex__item">
+								<div class="placeholder buyNow">立即购买</div>
+							</div>
+						</div>
+						<div class="weui-form-preview" style='margin-bottom: 20px'>
+							<div class="weui-form-preview__bd">
+								<div class="weui-form-preview__item">
+									<label class="weui-form-preview__label">请填写购买数量</label> <em
+										class="weui-form-preview__value">
+										<div>
+											<input type='tel' onchange="numberVerify(this)" class='weui-input'
+												style='text-align: right' value="1" maxlength="5" id='quantity'>
+										</div>
+									</em>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="weui-tab" style="border-top: 1px solid #ccc;">
+							<div class="weui-navbar">
+								<div id="product_tab" class="weui-navbar__item weui-bar__item_on">商品详情</div>
+								<div id="review_tab" class="weui-navbar__item">商品评论</div>
+							</div>
+							<div class="weui-tab__panel">
+								<div class="weui-panel weui-panel_access">
+									<div id='product_tab_content' class='tab_content'>
+										<input id="produceId" type="hidden"
+											th:value="${produceDetails.produceEntities[0].produce_id}"></input>
+										<div id="J_image_imgs" class="dtit-dt"
+											th:text="${produceDetails.produceEntities[0].produce_explain}">
+										</div>
+									</div>
+									<div id='review_tab_content' class='tab_content' style='display: none'>
+										<div th:if="${comments!=null}">
+											<div class="weui-panel__hd">用户评论</div>
+											<div class="weui-panel__bd">
+												<div th:each="comments,iterStat:${comments}">
+													<div class="weui-media-box weui-media-box_text">
+														<ul class="weui-media-box__title" id="center">
+															<img th:src="@{${comments.userEntity.user_headimgurl}}"
+																class="headimg">
+															<h4 style='font-size: 12px;color: rgba(70,70,70,0.78)'
+																id="left" th:text="${comments.userEntity.user_name}">
+															</h4>
+															<small class="right" style='font-size: 8px; color: #333'
+																th:text="${comments.comments_date}"></small>
+														</ul>
+
+														<p class="weui-media-box__desc"
+															th:text="${comments.comments_centent}"></p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 添加评论 -->
+										<div th:if="${session_user_id != null}">
+											<div>
+												<div class="weui-panel__hd">添加评论
+													<div class="weui-panel__bd">
+														<div class="weui-cells weui-cells_form">
+															<div class="weui-cell">
+																<div class="weui-cell__bd">
+																	<textarea name="content" class="weui-textarea"
+																		onpropertychange="smsCount(this)"
+																		oninput="smsCount(this)" placeholder="请输入文本"
+																		rows="3" maxlength="200"></textarea>
+																	<div class="weui-textarea-counter">
+																		<span id="contentCount">0</span>/200
+																	</div>
+																</div>
+															</div>
+															<div class="weui-cell__bd">
+																<input type="radio" name="stars" value="1">1星
+																<input type="radio" name="stars" value="2">2星
+																<input type="radio" name="stars" value="3">3星
+																<input type="radio" name="stars" value="4">4星
+																<input type="radio" name="stars" value="5"
+																	checked="checked">5星
+															</div>
+														</div>
+														<a href="javascript:;" onclick="addReviews()"
+															class="weui-btn weui-btn_primary"
+															style="margin: 15px 10% 15px 50%;">提交</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div th:if="${session_user_id == null}">
+											<div class="weui-panel__bd">
+												<div class="weui-media-box weui-media-box_text">
+													<h4 class="weui-media-box__title">
+														<a href="http://localhost:8080/login"
+															style="color: #3cc51f; font-size: 17px;">登录后即可评论</a>
+													</h4>
+												</div>
+											</div>
+										</div>
+										<!-- /添加评论 -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 商品结束 -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:include="include/menu :: menu">
+		</div>
+		<div th:include="include/message :: message">
+		</div>
+	</div>
+	<script type="text/javascript">
+		//监听添加购物车
+		$('.addCart').click(function(){
+			var produce_id = $("input[name='productId']").val();
+			var cart_produce_count = $("#quantity").val();
+			console.log(produce_id + "\n" + cart_produce_count);
+			// var flag = getAddCartProductInfo();
+			// console.log("getAddCartProductInfo==="+flag);
+					$.ajax({
+					type: "POST",
+					url: '/shoppingcart/addshoppingcart.do',
+					data: {produce_id:produce_id,cart_produce_count:cart_produce_count},
+					datatype: "json", //ajax返回值设置为text(json格式也可用它返回，可打印出结果，也可设置成json)
+					success: function (data) {
+						console.log("==========="+data.codemsg);
+						if (data.codemsg=="1") {
+							$.toast("<font style='size: 6px;' >"+"添加成功!<p>亲在购物车等您哦!</p>"+"</font>", 1000);
+							// return date.code;
+						}
+						if (data.codemsg=="0"){
+							$.toast("添加失败！", 1000);
+							// return date.code;
+						}
+						if(data.codemsg=="2"){
+                            $.toast("库存不足!", 1000);
+						}
+						if(data.codemsg=="3"){
+                            $.toast("未登录!", 1000);
+                        }
+					}
+				});
+
+		})
+
+		//	function init() {
+		//		if (skuList != null) {
+		//			for (var key in skuList) {
+		//				var optionValueKeyArray = skuList[key].optionValueKeyGroup.split('_');
+		//				for (var i in optionValueKeyArray) {
+		//					$('div[optionValueId="' + optionValueKeyArray[i] + '"]').show();
+		//				}
+		//			}
+		//		}
+		//	}
+		//	init();
+
+		//添加评论
+		function addReviews() {
+
+			var commentEntity = {
+				"comments_centent": $("textarea[name='content']").val(),
+				"comments_stars": 0,
+				"comments_produce_id": $("#produceId").val()
+			};
+			$("input[name='stars']").each(function () {
+				if (this.checked)
+					commentEntity.comments_stars = this.value;
+			});
+			console.log("===================" + $("textarea[name='content']").val());
+			console.log("===================" + $("#produceId").val());
+			console.log("===================" + $("#produceId").val());
+			$.ajax({
+				type: "POST",
+				url: '/comment/addcomment.do',
+				data: commentEntity,
+				dataType: "json", //ajax返回值设置为text(json格式也可用它返回，可打印出结果，也可设置成json)
+				success: function (data) {
+					if (data.code == 1) {
+						$.toast("添加评论成功,等待审核!", 1000);
+					} else {
+						$.toast("添加评论失败,请登录!", 1000);
+					}
+				},
+				error: function (json) {
+					showMsg('错误 请刷新页面!');
+				}
+			});
+		}
+
+
+
+		//计算评论字数
+		function smsCount(dom) {
+			$('#contentCount').html($(dom).val().length);
+		}
+
+		function numberVerify(dom) {
+			var num = $(dom).val();
+			if (num > 1 && num < 99999) {
+				$(dom).val(num);
+				return;
+			}
+			$(dom).val('1');
+		}
+		$(function () {
+			//商品明细 & 商品评论
+			$('.weui-navbar__item').on('click', function () {
+				$(this).addClass('weui-bar__item_on').siblings('.weui-bar__item_on').removeClass(
+					'weui-bar__item_on');
+				$('.tab_content').hide();
+				console.log('#' + $(this).attr('id') + '_content');
+				$('#' + $(this).attr('id') + "_content").show();
+			});
+
+
+			//商品option选项
+			$('.option').on('click', function () {
+				$(this).find('.weui-form-preview__value').html('<i class="weui-icon-success"></i>');
+				$(this).addClass('optionSelected').siblings('.optionSelected').removeClass('optionSelected');
+				$(this).siblings().find('.weui-form-preview__value').html('<i class="weui-icon-circle"></i>');
+			});
+
+
+			//监听添加购物车
+			//		$('.addCart').on('click', function() {
+			//			if(!valdataUserId()){
+			//				return;
+			//			}
+			//			if (loadCartCount() >= 15) {
+			//				showMsg("购物车已达上限!");
+			//				return;
+			//			}
+			//			//如果没有错误 新增当前商品到购物车
+			//			if (!checkOption() && checkQuantity()) {
+			//				console.log(getAddCartProductInfo());
+			//			}
+			//			carOrOrder(function(json) {
+			//				loadCartCount();
+			//				// 				getCartCount("${root}","?${_csrf.parameterName}=${_csrf.token}");
+			//			});
+			//		});
+
+			//		$('.buyNow').on('click', function() {
+			//			if(valdataUserId()==false){
+			//				return;
+			//			}
+			//			if (loadCartCount() >= 15) {
+			//				showMsg("购物车已达上限!");
+			//				return;
+			//			}
+			//			//如果没有错误 新增当前商品到购物车
+			//			if (!checkOption() && checkQuantity()) {
+			//				console.log(getAddCartProductInfo());
+			//			}
+			//			carOrOrder(function(json) {
+			//				// 				getCartCount("${root}","?${_csrf.parameterName}=${_csrf.token}");
+			//				window.location.href = "${pageContext.request.contextPath}/mobile/cart/item";
+			//			});
+			//		});
+
+			//检查用户是否选择商品选项
+			//		function checkOption() {
+			//			//检查该商品是否存在选项
+			//			if ($('.optionGroup').length > 0) {
+			//				//错误标识
+			//				var errorFLAG = false;
+			//				$('.optionGroup').each(function(index, item) {
+			//					// 用户没有选择商品选项提示对话框
+			//					if ($(item).find('.optionSelected').length == 0) {
+			//						//设置错误标识
+			//						errorFLAG = true;
+			//						//显示错误消息内容
+			//						$('#optionMsg').find('.weui-dialog__bd').html($(item).find('.option_title').html());
+			//						//显示错误对话框
+			//						$('#optionMsg').fadeIn(200);
+			//						//退出当前循环
+			//						return false;
+			//					}
+			//				});
+			//				return errorFLAG;
+			//			}
+			//		}
+
+			//购买数量验证
+			//		function checkQuantity() {
+			//			var pattern = /^[0-9]{1,2}$/;
+			//			if (pattern.test($("#quantity").val())) {
+			//				return true;
+			//			} else {
+			//				//显示错误消息内容
+			//				$('#optionMsg').find('.weui-dialog__bd').html("购买数量输入错误, 最多购买99个哦");
+			//				//显示错误对话框
+			//				$('#optionMsg').fadeIn(200);
+			//				return false;
+			//			}
+			//		}
+
+
+			//获取添加购物车的产品信息
+			//		function getAddCartProductInfo() {
+			//			var productOption = new Array();
+			//			if ($('.optionGroup').length > 0) {
+			//				$('.optionGroup').each(function(index, item) {
+			//					var optionObject = $(item).find('.optionSelected');
+			//					productOption.push({
+			//						"optionId": $(optionObject).attr("optionId"),
+			//						"optionValueId": $(optionObject).attr("optionValueId"),
+			//						"optionValueName": $(optionObject).attr("optionValueName")
+			//					});
+			//				});
+			//			}
+			//
+			//			return {
+			//				"productId": $("#product_title").attr("productId"),
+			//				"quantity": $("#quantity").val(),
+			//				"productOption": productOption
+			//			}
+			//
+			//		}
+
+
+		});
+
+		//	//获取商品SKU
+		//	function getSku(optionValueKeyGroup) {
+		//		if (skuList != null) {
+		//			for (var index in skuList) {
+		//				if (skuList[index].optionValueKeyGroup == optionValueKeyGroup) {
+		//					return skuList[index].id;
+		//				}
+		//			}
+		//		}
+		//		return null;
+		//	}
+
+		function carOrOrder(Obj) {
+			if ($('.optionGroup').length != $('.optionSelected').length) {
+				showMsg("您选择的类别没有库存!");
+				return;
+			}
+			var optionValueKeyGroup = $('#submitOptionValueKeyGroup').val()
+			for (var key in skuList) {
+				if (skuList[key].optionValueKeyGroup == optionValueKeyGroup) {
+					if (skuList[key].quantity < $('#quantity').val()) {
+						showMsg("库存不足!");
+						return;
+					}
+				}
+			}
+			var orderItem = {
+				"productId": "${productDetails.id}",
+				"quantity": $('#quantity').val(),
+				"optionValueKeyGroup": optionValueKeyGroup,
+				"skuId": getSku(optionValueKeyGroup),
+				"jsonData": getJsonData(optionValueKeyGroup)
+			}
+			$.ajax({
+				type: "POST",
+				contentType: 'application/json;charset=utf-8',
+				url: "${pageContext.request.contextPath}/mobile/cart/add?${_csrf.parameterName}=${_csrf.token}",
+				data: JSON.stringify(orderItem),
+				dataType: "json", //ajax返回值设置为text（json格式也可用它返回，可打印出结果，也可设置成json）
+				async: false,
+				success: Obj,
+				error: function (json) {
+					showMsg("加入购物车失败!");
+				}
+			});
+		}
+		//	function getJsonData(optionValueKeyGroup) {
+		//		if (skuList != null) {
+		//			for(var index in skuList) {
+		//				if (skuList[index].optionValueKeyGroup == optionValueKeyGroup) {
+		//					return skuList[index].skuJson;
+		//				}
+		//			}
+		//		}
+		//		return null;
+		//	}
+		function valdataUserId() {
+			var flg = false;
+			$.ajax({
+				type: "POST",
+				url: '${root}' + '/mobile/account/isLogin?${_csrf.parameterName}=${_csrf.token}',
+				dataType: "json",
+				async: false,
+				success: function (data) {
+					if (!data.success) {
+						showMsg('请登录,只有登录后才能操作!');
+					} else {
+						flg = true;
+					}
+				},
+				error: function (json) {
+					showMsg('错误 请登录,只有登录后才能操作!');
+				}
+			});
+			return flg;
+		}
+	</script>
+</body>
+
+</html>

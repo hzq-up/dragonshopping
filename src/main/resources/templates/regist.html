@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>注册</title>
+    <link rel="stylesheet" th:href="@{/css/weui.css}">
+    <link rel="stylesheet" th:href="@{/css/weuix.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-2.1.0.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zepto.weui.js}"></script>
+    <style type="text/css">
+        .top{
+            margin-top: 45%
+        }
+        .iconleft{
+            margin-left: 10%;
+        }
+    </style>
+</head>
+<body>
+<!--标题栏-->
+<div class="weui-header bg-success">
+    <div class="weui-header-left"> <a class="f-white" th:href="index">首页</a>  </div>
+    <h1 class="weui-header-title">神龙购书网</h1>
+    <div class="weui-header-right"><a class="f-white" th:href="regist">登录</a></div>
+</div>
+
+<div class="top">
+    <div class="weui-cells weui-cells_form border-b">
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">
+                    <span class="icon icon-30 iconleft"></span>
+                </label>
+            </div>
+            <div class="weui-cell__bd">
+                <input id="user_name" class="weui-input" placeholder="手机号/QQ/邮箱" maxlength="19" minlength="1">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">
+                    <span class="icon icon-31 iconleft"></span>
+                </label>
+            </div>
+            <div class="weui-cell__hd">
+                <input id="password" class="weui-input" placeholder="请输入手机号" type="password" minlength="6" maxlength="16">
+            </div>
+        </div>
+        <!--<div class="border-b w"></div>-->
+    </div>
+    <div class="weui-btn-area">
+        <a id="regist_btn" class="weui-btn weui-btn_primary" href="javascript:">注 册</a>
+    </div>
+</div>
+
+
+
+    <!--<div>-->
+        <!--<input id="user_name" name="userName" type="text" placeholder="用户名"/>-->
+    <!--</div>-->
+    <!--<br />-->
+    <!--<div>-->
+        <!--<input id="password" name="password" type="password" placeholder="密码"/>-->
+    <!--</div>-->
+    <!--<br />-->
+    <!--<button id="regist_btn">注 册</button>-->
+    <script type="text/javascript">
+        $("#regist_btn").click(function () {
+            var username = $.trim($("#user_name").val())
+            var password = $.trim($("#password").val())
+            console.log(username);
+            if(username.length<=19&&username.length>0&&password.length>=0&&password.length<=16){
+                $.ajax({
+                    type: "POST",
+                    url: '/user/regist.do',
+                    data: {user_name:username,user_password:password},
+                    datatype: 'json',
+                    success: function (data) {
+
+                        if (data.code == 1) {
+                            console.log("data.msg======"+data.msg);
+                            //跳转到查询结果界面
+                            window.location.href='http://localhost:8080/login';
+                            $.toast("注册成功!",1000);
+                        }
+                        else {
+                            $.alert("注册失败!");
+                            console.log("data.msg======"+data.msg);
+                        }
+
+                    }
+                })
+            }else {
+                $.alert("用户名长度:(0-19)\n密码长度:(0-16)");
+            }
+        })
+
+    </script>
+
+</body>
+</html>

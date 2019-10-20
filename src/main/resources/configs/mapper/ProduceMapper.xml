@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hzq.dragonshopping.mapper.ProduceMapper">
+    <!--查询9条热门商品-->
+    <select id="selectHotCommodyByHot" resultType="ProduceEntity">
+        SELECT * FROM produce_sell order by produce_hot desc limit 6
+    </select>
+    <!--根据商品id查询查询商品信息-->
+    <select id="selectProduceById" parameterType="int" resultType="ProduceEntity">
+        SELECT * FROM produce_sell WHERE produce_id=#{value}
+    </select>
+    <!--查询商品详情和评论详情-->
+    <resultMap id="resultProducCommentsUserMap" type="com.hzq.dragonshopping.entity.ProducCommentsUserEntity">
+        <id property="comments_id" jdbcType="INTEGER" column="comments_id"/>
+        <result property="comments_centent" jdbcType="LONGVARCHAR" column="comments_centent"/>
+        <result property="comments_user_id" jdbcType="INTEGER" column="comments_user_id"/>
+        <result property="comments_produce_id" jdbcType="INTEGER" column="comments_produce_id"/>
+        <result property="comments_stars" jdbcType="INTEGER" column="comments_stars"/>
+        <result property="comments_date" jdbcType="TIMESTAMP" column="comments_date"/>
+
+        <association property="userEntity" javaType="com.hzq.dragonshopping.entity.UserEntity">
+            <id property="user_id" jdbcType="INTEGER" column="user_id"/>
+            <result property="user_name" jdbcType="VARCHAR" column="user_name"/>
+            <result property="user_sex" jdbcType="VARCHAR" column="user_sex"/>
+            <result property="user_password" jdbcType="VARCHAR" column="user_password"/>
+            <result property="user_address" jdbcType="VARCHAR" column="user_address"/>
+            <result property="user_phone" jdbcType="VARCHAR" column="user_phone"/>
+            <result property="user_headimgurl" jdbcType="VARCHAR" column="user_headimgurl"/>
+            <result property="user_status" jdbcType="INTEGER" column="user_status"/>
+            <result property="user_type" jdbcType="INTEGER" column="user_type"/>
+            <result property="user_money" jdbcType="INTEGER" column="user_money"/>
+        </association>
+        <association property="produceEntity" javaType="com.hzq.dragonshopping.entity.ProduceEntity">
+            <id property="produce_id" jdbcType="INTEGER" column="produce_id"/>
+            <result property="produce_name" jdbcType="VARCHAR" column="produce_name"/>
+            <result property="produce_explain" jdbcType="VARCHAR" column="produce_explain"/>
+            <result property="produce_produce_sortnum" jdbcType="VARCHAR" column="produce_produce_sortnum"/>
+            <result property="produce_count" jdbcType="INTEGER" column="produce_count"/>
+            <result property="produce_price" jdbcType="DECIMAL" column="produce_price"/>
+            <result property="produce_shop_price" jdbcType="DECIMAL" column="produce_shop_price"/>
+            <result property="produce_imgurl" jdbcType="VARCHAR" column="produce_imgurl"/>
+            <result property="produce_author" jdbcType="VARCHAR" column="produce_author"/>
+            <result property="produce_sale_count" jdbcType="INTEGER" column="produce_sale_count"/>
+            <result property="produce_hot" jdbcType="INTEGER" column="produce_hot"/>
+            <result property="produce_creat_user_id" jdbcType="INTEGER" column="produce_creat_user_id"/>
+            <result property="create_time" jdbcType="TIMESTAMP" column="create_time"/>
+            <result property="update_time" jdbcType="TIMESTAMP" column="update_time"/>
+        </association>
+    </resultMap>
+    <select id="selectProducCommentsUserByProducId" parameterType="int" resultMap="resultProducCommentsUserMap">
+        SELECT
+        p.produce_id,
+        p.produce_name,
+        p.produce_explain,
+        p.produce_count,
+        p.produce_price,
+        p.produce_shop_price,
+        p.produce_imgurl,
+        p.produce_author,
+        p.produce_sale_count,
+        p.produce_hot,
+        u.user_id,
+        u.user_name,
+        u.user_sex,
+        u.user_headimgurl,
+        c.comments_id,
+        c.comments_centent,
+        c.comments_user_id,
+        c.comments_produce_id,
+        c.comments_stars,
+        c.comments_date from comment as c,produce_sell as p,user as u
+        where
+        c.comments_user_id=u.user_id and c.comments_produce_id=p.produce_id and p.produce_id=#{value}
+        ORDER BY c.comments_user_id
+    </select>
+
+    <!--查询商品库存-->
+    <select id="selectProduceCount" parameterType="produceEntity" resultType="produceEntity">
+        SELECT produce_id,produce_count FROM produce_sell where produce_count>=#{produce_count} and produce_id=#{produce_id}
+    </select>
+
+    <select id="selectProduceCountByPid" parameterType="produceEntity" resultType="produceEntity">
+        SELECT produce_id,produce_count FROM produce_sell where produce_id=#{produce_id}
+    </select>
+    <!--根据商品id更新商品库存-->
+    <update id="updateProduceProduce_count" parameterType="produceEntity">
+        UPDATE
+          produce_sell
+        SET
+          produce_count = #{produce_count}
+        WHERE
+          produce_id= #{produce_id}
+    </update>
+
+    <!--根据商品名称模糊查询商品详情-->
+    <select id="selectAllByPN" parameterType="produceEntity" resultType="produceEntity">
+        SELECT
+          *
+        FROM
+          produce_sell
+        WHERE
+          produce_name
+        LIKE
+          CONCAT(CONCAT('%', #{produce_name}), '%')
+    </select>
+
+
+</mapper>

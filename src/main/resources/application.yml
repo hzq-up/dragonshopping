@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/buyers?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      username: root
+      password: root
+  # spring mvc 视图解析器
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+    static-path-pattern: /**
+
+mybatis:
+  mapper-locations: classpath:configs/mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.hzq.dragonshopping.entity  # 注意：对应实体类的路径
+
+thymeleaf:
+  cache: false #关闭缓存
+  prefix: classpath:/templates/
+  suffix: .html
+  mode: HTML5 #设置模板类型
+  encoding: utf-8  #设置编码
+
+#jedis :
+#  pool :
+#    host : 192.168.42111
+#    port : 6379
+#    config :
+#      maxActive: 20
+#      maxTotal: 100
+#      maxIdle: 10
+#      maxWaitMillis : 100000
+
