@@ -13,7 +13,7 @@ import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
 /**
- * Redis通用工具类
+ * Redis通用工具类;
  * @Author 胡志强
  *
  */
