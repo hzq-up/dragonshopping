@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = DragonshoppingApplication.class)
 public class DragonshoppingApplicationTests {
 	@Resource
 	private UserMapper userMapper;
