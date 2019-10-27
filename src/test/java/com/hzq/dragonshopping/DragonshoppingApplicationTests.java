@@ -24,7 +24,7 @@ public class DragonshoppingApplicationTests {
 	@Test
 	public void contextLoads() {
 		UserEntity userEntity = new UserEntity();
-		userEntity.setUser_name("胡志强");
+		userEntity.setUser_name("admin");
 		userEntity.setUser_password("password");
 		System.out.println(userMapper.selectByUnamePwdType(userEntity).getUser_id());
 	}
