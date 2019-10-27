@@ -31,7 +31,7 @@ public class DragonshoppingApplicationTests {
 	@Test
 	public void testRedis(){
 		Map<String,String> userH = new HashMap<>();
-		userH.put("name","胡志强");
+		userH.put("name","hzq");
 		userH.put("age","10");
 		System.out.println(jedisUtils.hmset("user:001",userH));
 		System.out.println(jedisUtils.hmget("user:001","name","age"));
