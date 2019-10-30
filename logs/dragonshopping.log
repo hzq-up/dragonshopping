@@ -1,0 +1,26 @@
+2019-10-30 13:16:08.079 INFO  com.hzq.dragonshopping.DragonshoppingApplication Line:50  - Starting DragonshoppingApplication on DESKTOP-83UI59K with PID 5692 (D:\0BianChen\BianChen\dragonshopping\target\classes started by 胡志强 in D:\0BianChen\BianChen\dragonshopping)
+2019-10-30 13:16:08.079 DEBUG com.hzq.dragonshopping.DragonshoppingApplication Line:53  - Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
+2019-10-30 13:16:08.080 INFO  com.hzq.dragonshopping.DragonshoppingApplication Line:648 - No active profile set, falling back to default profiles: default
+2019-10-30 13:16:14.101 INFO  com.hzq.dragonshopping.DragonshoppingApplication Line:50  - Starting DragonshoppingApplication on DESKTOP-83UI59K with PID 4192 (D:\0BianChen\BianChen\dragonshopping\target\classes started by 胡志强 in D:\0BianChen\BianChen\dragonshopping)
+2019-10-30 13:16:14.115 DEBUG com.hzq.dragonshopping.DragonshoppingApplication Line:53  - Running with Spring Boot v2.1.8.RELEASE, Spring v5.1.9.RELEASE
+2019-10-30 13:16:14.116 INFO  com.hzq.dragonshopping.DragonshoppingApplication Line:648 - No active profile set, falling back to default profiles: default
+2019-10-30 13:16:17.247 INFO  org.apache.catalina.core.StandardService Line:173 - Starting service [Tomcat]
+2019-10-30 13:16:17.249 INFO  org.apache.catalina.core.StandardEngine Line:173 - Starting Servlet engine: [Apache Tomcat/9.0.24]
+2019-10-30 13:16:17.404 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Line:173 - Initializing Spring embedded WebApplicationContext
+2019-10-30 13:16:19.785 INFO  com.hzq.dragonshopping.DragonshoppingApplication Line:59  - Started DragonshoppingApplication in 6.699 seconds (JVM running for 9.361)
+2019-10-30 13:16:50.384 INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Line:173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-10-30 13:16:50.527 INFO  com.zaxxer.hikari.HikariDataSource Line:110 - HikariPool-1 - Starting...
+2019-10-30 13:16:50.715 INFO  com.zaxxer.hikari.HikariDataSource Line:123 - HikariPool-1 - Start completed.
+2019-10-30 13:16:50.728 DEBUG com.hzq.dragonshopping.mapper.ProduceMapper.selectHotCommodyByHot Line:143 - ==>  Preparing: SELECT * FROM produce_sell order by produce_hot desc limit 6 
+2019-10-30 13:16:50.770 DEBUG com.hzq.dragonshopping.mapper.ProduceMapper.selectHotCommodyByHot Line:143 - ==> Parameters: 
+2019-10-30 13:16:50.800 DEBUG com.hzq.dragonshopping.mapper.ProduceMapper.selectHotCommodyByHot Line:143 - <==      Total: 6
+2019-10-30 13:16:50.803 DEBUG com.hzq.dragonshopping.mapper.ProduceCategoryMapper.selectProduceCategoryExample Line:143 - ==>  Preparing: SELECT * FROM produce_sell_category as T1 left join produce_sell as T2 on T1.sortnum = T2.produce_produce_sortnum ORDER BY T1.id asc 
+2019-10-30 13:16:50.804 DEBUG com.hzq.dragonshopping.mapper.ProduceCategoryMapper.selectProduceCategoryExample Line:143 - ==> Parameters: 
+2019-10-30 13:16:50.817 DEBUG com.hzq.dragonshopping.mapper.ProduceCategoryMapper.selectProduceCategoryExample Line:143 - <==      Total: 10
+2019-10-30 13:16:50.818 INFO  com.hzq.dragonshopping.controller.IndexController Line:35  - 数据
+2019-10-30 13:16:52.754 DEBUG com.hzq.dragonshopping.mapper.ProduceCategoryMapper.selectProduceCategoryExampleById Line:143 - ==>  Preparing: SELECT * FROM produce_sell_category as T1 left join produce_sell as T2 on T1.sortnum = T2.produce_produce_sortnum where produce_id=? 
+2019-10-30 13:16:52.756 DEBUG com.hzq.dragonshopping.mapper.ProduceCategoryMapper.selectProduceCategoryExampleById Line:143 - ==> Parameters: 2(Integer)
+2019-10-30 13:16:52.759 DEBUG com.hzq.dragonshopping.mapper.ProduceCategoryMapper.selectProduceCategoryExampleById Line:143 - <==      Total: 1
+2019-10-30 13:16:52.761 DEBUG com.hzq.dragonshopping.mapper.ProduceMapper.selectProducCommentsUserByProducId Line:143 - ==>  Preparing: SELECT p.produce_id, p.produce_name, p.produce_explain, p.produce_count, p.produce_price, p.produce_shop_price, p.produce_imgurl, p.produce_author, p.produce_sale_count, p.produce_hot, u.user_id, u.user_name, u.user_sex, u.user_headimgurl, c.comments_id, c.comments_centent, c.comments_user_id, c.comments_produce_id, c.comments_stars, c.comments_date from comment as c,produce_sell as p,user as u where c.comments_user_id=u.user_id and c.comments_produce_id=p.produce_id and p.produce_id=? ORDER BY c.comments_user_id 
+2019-10-30 13:16:52.764 DEBUG com.hzq.dragonshopping.mapper.ProduceMapper.selectProducCommentsUserByProducId Line:143 - ==> Parameters: 2(Integer)
+2019-10-30 13:16:52.771 DEBUG com.hzq.dragonshopping.mapper.ProduceMapper.selectProducCommentsUserByProducId Line:143 - <==      Total: 3
