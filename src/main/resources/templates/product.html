@@ -131,6 +131,8 @@
 								<div class="placeholder price">
 									<div class='shop_price'
 										th:text="'￥'+${produceDetails.produceEntities[0].produce_price}+'元'"></div>
+									<input id="price" type="hidden"
+										   th:value="${produceDetails.produceEntities[0].produce_price}">
 									<div>
 										<del class='m_price'
 											th:text="'￥'+${produceDetails.produceEntities[0].produce_shop_price}+'元'"></del>
@@ -277,31 +279,19 @@
 							// return date.code;
 						}
 						if (data.codemsg=="0"){
-							$.toast("添加失败！", 1000);
+							$.alert("添加失败！",  "提示");
 							// return date.code;
 						}
 						if(data.codemsg=="2"){
-                            $.toast("库存不足!", 1000);
+                            $.alert("库存不足!",  "提示");
 						}
 						if(data.codemsg=="3"){
-                            $.toast("未登录!", 1000);
+                            $.alert("请先登录!",  "提示");
                         }
 					}
 				});
 
 		})
-
-		//	function init() {
-		//		if (skuList != null) {
-		//			for (var key in skuList) {
-		//				var optionValueKeyArray = skuList[key].optionValueKeyGroup.split('_');
-		//				for (var i in optionValueKeyArray) {
-		//					$('div[optionValueId="' + optionValueKeyArray[i] + '"]').show();
-		//				}
-		//			}
-		//		}
-		//	}
-		//	init();
 
 		//添加评论
 		function addReviews() {
@@ -327,11 +317,11 @@
 					if (data.code == 1) {
 						$.toast("添加评论成功,等待审核!", 1000);
 					} else {
-						$.toast("添加评论失败,请登录!", 1000);
+						$.alert("添加评论失败","提示");
 					}
 				},
 				error: function (json) {
-					showMsg('错误 请刷新页面!');
+                    $.alert('错误 请刷新页面!',"提示");
 				}
 			});
 		}
@@ -369,148 +359,46 @@
 				$(this).siblings().find('.weui-form-preview__value').html('<i class="weui-icon-circle"></i>');
 			});
 
-
-			//监听添加购物车
-			//		$('.addCart').on('click', function() {
-			//			if(!valdataUserId()){
-			//				return;
-			//			}
-			//			if (loadCartCount() >= 15) {
-			//				showMsg("购物车已达上限!");
-			//				return;
-			//			}
-			//			//如果没有错误 新增当前商品到购物车
-			//			if (!checkOption() && checkQuantity()) {
-			//				console.log(getAddCartProductInfo());
-			//			}
-			//			carOrOrder(function(json) {
-			//				loadCartCount();
-			//				// 				getCartCount("${root}","?${_csrf.parameterName}=${_csrf.token}");
-			//			});
-			//		});
-
-//					$('.buyNow').on('click', function() {
-//						if(valdataUserId()==false){
-//							return;
-//						}
-//						if (loadCartCount() >= 15) {
-//							showMsg("购物车已达上限!");
-//							return;
-//						}
-//						//如果没有错误 新增当前商品到购物车
-//						if (!checkOption() && checkQuantity()) {
-//							console.log(getAddCartProductInfo());
-//						}
-//						carOrOrder(function(json) {
-//							// 				getCartCount("${root}","?${_csrf.parameterName}=${_csrf.token}");
-//							window.location.href = "${pageContext.request.contextPath}/mobile/cart/item";
-//						});
-//					});
-
 					//支付
 					$('.buyNow').on('click', function() {
                         var produce_id = $("input[name='productId']").val();
                         var cart_produce_count = $("#quantity").val();
+                        var produce_price = $("#price").val();
+                        console.log("produce_price====="+produce_price);
                         $.ajax({
                             type: "POST",
-                            url: '/produce/pay',
-                            data: {produce_id:produce_id,cart_produce_count:cart_produce_count},
+                            url: '/user/pay.do',
+                            data: {produce_id:produce_id,produce_count:cart_produce_count,produce_price:produce_price},
                             datatype: "json", //ajax返回值设置为text(json格式也可用它返回，可打印出结果，也可设置成json)
                             success: function (data) {
-                                console.log("==========="+data.codemsg);
-                                if (data.codemsg=="1") {
-                                    $.toast("<font style='size: 6px;' >"+"添加成功!<p>亲在购物车等您哦!</p>"+"</font>", 1000);
+                                console.log("==========="+data.msgcode);
+                                if (data.msgcode=="1") {
+                                    $.toast("<font style='size: 6px;' >支付成功</font>", 1000);
                                     // return date.code;
                                 }
-                                if (data.codemsg=="0"){
-                                    $.toast("添加失败!", 1000);
+                                if (data.msgcode=="0"){
+                                    $.alert("支付失败！", "提示");
                                     // return date.code;
                                 }
-                                if(data.codemsg=="2"){
-                                    $.toast("库存不足!", 1000);
+                                if(data.msgcode=="00"){
+                                    $.alert("您的余额不足!", "提示");
                                 }
-                                if(data.codemsg=="3"){
-                                    $.toast("未登录!", 1000);
+                                if(data.msgcode=="000"){
+                                    $.alert("商品库存不足!", "提示");
                                 }
+                                if(data.msgcode=="0000"){
+//                                    $.alert("请先登录！","提示");
+                                    window.location.href = "http://localhost:8080/login";
+
+								}
+                            },
+                            error:function (json) {
+								$.alert("出错了！", 1000);
                             }
                         });
 					});
 
-
-			//检查用户是否选择商品选项
-			//		function checkOption() {
-			//			//检查该商品是否存在选项
-			//			if ($('.optionGroup').length > 0) {
-			//				//错误标识
-			//				var errorFLAG = false;
-			//				$('.optionGroup').each(function(index, item) {
-			//					// 用户没有选择商品选项提示对话框
-			//					if ($(item).find('.optionSelected').length == 0) {
-			//						//设置错误标识
-			//						errorFLAG = true;
-			//						//显示错误消息内容
-			//						$('#optionMsg').find('.weui-dialog__bd').html($(item).find('.option_title').html());
-			//						//显示错误对话框
-			//						$('#optionMsg').fadeIn(200);
-			//						//退出当前循环
-			//						return false;
-			//					}
-			//				});
-			//				return errorFLAG;
-			//			}
-			//		}
-
-//			购买数量验证
-//					function checkQuantity() {
-//						var pattern = /^[0-9]{1,2}$/;
-//						if (pattern.test($("#quantity").val())) {
-//							return true;
-//						} else {
-//							//显示错误消息内容
-//							$('#optionMsg').find('.weui-dialog__bd').html("购买数量输入错误, 最多购买99个哦");
-//							//显示错误对话框
-//							$('#optionMsg').fadeIn(200);
-//							return false;
-//						}
-//					}
-
-
-			//获取添加购物车的产品信息
-			//		function getAddCartProductInfo() {
-			//			var productOption = new Array();
-			//			if ($('.optionGroup').length > 0) {
-			//				$('.optionGroup').each(function(index, item) {
-			//					var optionObject = $(item).find('.optionSelected');
-			//					productOption.push({
-			//						"optionId": $(optionObject).attr("optionId"),
-			//						"optionValueId": $(optionObject).attr("optionValueId"),
-			//						"optionValueName": $(optionObject).attr("optionValueName")
-			//					});
-			//				});
-			//			}
-			//
-			//			return {
-			//				"productId": $("#product_title").attr("productId"),
-			//				"quantity": $("#quantity").val(),
-			//				"productOption": productOption
-			//			}
-			//
-			//		}
-
-
 		});
-
-		//	//获取商品SKU
-		//	function getSku(optionValueKeyGroup) {
-		//		if (skuList != null) {
-		//			for (var index in skuList) {
-		//				if (skuList[index].optionValueKeyGroup == optionValueKeyGroup) {
-		//					return skuList[index].id;
-		//				}
-		//			}
-		//		}
-		//		return null;
-		//	}
 
 		function carOrOrder(Obj) {
 			if ($('.optionGroup').length != $('.optionSelected').length) {
@@ -546,16 +434,7 @@
 				}
 			});
 		}
-		//	function getJsonData(optionValueKeyGroup) {
-		//		if (skuList != null) {
-		//			for(var index in skuList) {
-		//				if (skuList[index].optionValueKeyGroup == optionValueKeyGroup) {
-		//					return skuList[index].skuJson;
-		//				}
-		//			}
-		//		}
-		//		return null;
-		//	}
+
 		function valdataUserId() {
 			var flg = false;
 			$.ajax({

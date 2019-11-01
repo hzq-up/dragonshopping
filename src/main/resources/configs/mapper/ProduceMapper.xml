@@ -31,7 +31,6 @@
             <result property="user_headimgurl" jdbcType="VARCHAR" column="user_headimgurl"/>
             <result property="user_status" jdbcType="INTEGER" column="user_status"/>
             <result property="user_type" jdbcType="INTEGER" column="user_type"/>
-            <result property="user_money" jdbcType="INTEGER" column="user_money"/>
         </association>
         <association property="produceEntity" javaType="com.hzq.dragonshopping.entity.ProduceEntity">
             <id property="produce_id" jdbcType="INTEGER" column="produce_id"/>
@@ -77,7 +76,7 @@
         ORDER BY c.comments_user_id
     </select>
 
-    <!--查询商品库存-->
+    <!--查询商品库存是否够用-->
     <select id="selectProduceCount" parameterType="produceEntity" resultType="produceEntity">
         SELECT produce_id,produce_count FROM produce_sell where produce_count>=#{produce_count} and produce_id=#{produce_id}
     </select>

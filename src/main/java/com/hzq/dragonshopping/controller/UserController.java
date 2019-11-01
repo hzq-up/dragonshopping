@@ -1,7 +1,11 @@
 package com.hzq.dragonshopping.controller;
 
+import com.hzq.dragonshopping.entity.ProduceEntity;
 import com.hzq.dragonshopping.entity.UserEntity;
 import com.hzq.dragonshopping.service.IUserService;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +27,7 @@ import java.util.Map;
 @RequestMapping("/user/")
 public class UserController {
 
+    private final Logger logger = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     private IUserService userService;
 
@@ -56,7 +61,7 @@ public class UserController {
             res_map.put("msg", "登录失败");
             System.out.println("登陆失败");
         }
-        System.out.println(request.getSession(true).getAttribute("username").toString());
+//        System.out.println(request.getSession(true).getAttribute("username").toString());
         return res_map;
 
     }
@@ -106,11 +111,16 @@ public class UserController {
     }
 
 
+    /**
+     * 登出
+     * @param request
+     * @param httpSession
+     * @return
+     */
     @ResponseBody
     @RequestMapping("loginout.do")
     public Object loginOut(HttpServletRequest request, HttpSession httpSession){
         //获得session
-
         Map<String,String> map = new HashMap<>();
         if(request.getSession(true).getAttribute("user_id")!=null){
             RequestAttributes ra = RequestContextHolder.getRequestAttributes();
@@ -127,5 +137,36 @@ public class UserController {
         System.out.println("退出登录！");
         return map;
     }
+
+    /**
+     * 购买商品
+     * @param request
+     * @param userEntity
+     * @param produceEntity
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("pay.do")
+    public Object buyProduce(HttpServletRequest request, UserEntity userEntity, ProduceEntity produceEntity){
+
+        Map<String,Object> map = new HashMap<>();
+        if(request.getSession(true).getAttribute("user_id") != null){
+            //获取存在session中的id
+            Integer uid = (Integer) request.getSession(true).getAttribute("user_id");
+            userEntity.setUser_id(uid);
+            logger.info("============================="+userEntity.toString()+"\n"+produceEntity.toString());
+            map = userService.payProduce(produceEntity,userEntity);
+            if (map.get("msgcode") == "1"){
+                logger.info("code+msg"+"1支付成功");
+            }else {
+                logger.info("code+msg"+"0支付失败");
+            }
+        }else {
+            map.put("msgcode","0000");
+            logger.info("code+msg"+"0000未登录！");
+        }
+        return map;
+    }
+
 
 }

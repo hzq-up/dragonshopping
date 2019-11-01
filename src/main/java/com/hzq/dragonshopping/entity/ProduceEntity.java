@@ -12,9 +12,9 @@ public class ProduceEntity {
     private String produce_produce_sortnum;
     //商品库存数量
     private Integer produce_count;
-    //商品进价
+    //商品实际销售价格
     private Double produce_price;
-    //商品销价
+    //商品原销售价格
     private Double produce_shop_price;
     //商品图片路径
     private String produce_imgurl;
@@ -145,5 +145,25 @@ public class ProduceEntity {
 
     public ProduceEntity() {
         super();
+    }
+
+    @Override
+    public String toString() {
+        return "ProduceEntity{" +
+                "produce_id=" + produce_id +
+                ", produce_name='" + produce_name + '\'' +
+                ", produce_explain='" + produce_explain + '\'' +
+                ", produce_produce_sortnum='" + produce_produce_sortnum + '\'' +
+                ", produce_count=" + produce_count +
+                ", produce_price=" + produce_price +
+                ", produce_shop_price=" + produce_shop_price +
+                ", produce_imgurl='" + produce_imgurl + '\'' +
+                ", produce_author='" + produce_author + '\'' +
+                ", produce_sale_count=" + produce_sale_count +
+                ", produce_hot=" + produce_hot +
+                ", produce_creat_user_id=" + produce_creat_user_id +
+                ", create_time='" + create_time + '\'' +
+                ", update_time='" + update_time + '\'' +
+                '}';
     }
 }

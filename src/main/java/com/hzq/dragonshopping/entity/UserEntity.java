@@ -20,7 +20,7 @@ public class UserEntity {
     //身份标识（1买家，2卖家，3超级管理员）
     private Integer user_type;
     //用户账户余额
-    private Integer user_money;
+    private Double user_money;
 
     public Integer getUser_id() {
         return user_id;
@@ -94,15 +94,44 @@ public class UserEntity {
         this.user_type = user_type;
     }
 
-    public Integer getUser_money() {
+    public Double getUser_money() {
         return user_money;
     }
 
-    public void setUser_money(Integer user_money) {
+    public void setUser_money(Double user_money) {
+        this.user_money = user_money;
+    }
+
+    public UserEntity(Integer user_id, String user_name, String user_sex, String user_password, String user_address, String user_phone, String user_headimgurl, Integer user_status, Integer user_type, Double user_money) {
+        this.user_id = user_id;
+        this.user_name = user_name;
+        this.user_sex = user_sex;
+        this.user_password = user_password;
+        this.user_address = user_address;
+        this.user_phone = user_phone;
+        this.user_headimgurl = user_headimgurl;
+        this.user_status = user_status;
+        this.user_type = user_type;
         this.user_money = user_money;
     }
 
     public UserEntity() {
         super();
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "user_id=" + user_id +
+                ", user_name='" + user_name + '\'' +
+                ", user_sex='" + user_sex + '\'' +
+                ", user_password='" + user_password + '\'' +
+                ", user_address='" + user_address + '\'' +
+                ", user_phone='" + user_phone + '\'' +
+                ", user_headimgurl='" + user_headimgurl + '\'' +
+                ", user_status=" + user_status +
+                ", user_type=" + user_type +
+                ", user_money=" + user_money +
+                '}';
     }
 }

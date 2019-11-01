@@ -26,4 +26,17 @@
             #{user_money}
           )
     </insert>
+    <!--查询余额是否够用-->
+    <select id="selectComparedUserBalanceById" parameterType="UserEntity" resultType="UserEntity">
+        SELECT user_id,user_money FROM USER where user_money &gt;= #{user_money} and user_id = #{user_id}
+    </select>
+    <!--更新用户余额-->
+    <update id="updateUserMoneyByUid" parameterType="UserEntity">
+        UPDATE
+          user
+        SET
+          user_money = #{user_money}
+        WHERE
+          user_id= #{user_id}
+    </update>
 </mapper>

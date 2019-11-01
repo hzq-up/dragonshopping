@@ -1,6 +1,9 @@
 package com.hzq.dragonshopping.service;
 
+import com.hzq.dragonshopping.entity.ProduceEntity;
 import com.hzq.dragonshopping.entity.UserEntity;
+
+import java.util.Map;
 
 public interface IUserService {
 
@@ -17,4 +20,11 @@ public interface IUserService {
      * @return
      */
     int regist(UserEntity userEntity);
+
+    /**
+     * 购买商品
+     * @param produceEntity
+     * @return
+     */
+    Map<String,Object> payProduce(ProduceEntity produceEntity,UserEntity userEntity);
 }
