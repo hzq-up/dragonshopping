@@ -40,7 +40,7 @@ logging:
 
 #jedis :
 #  pool :
-#    host : 192.168.42111
+#    host : 192.168.42.111
 #    port : 6379
 #    config :
 #      maxActive: 20
